@@ -1,10 +1,10 @@
 import { Button, Result } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "../components/sign/Auth";
-import { Registration } from "../components/sign/Registration";
-import { CheckCode } from "../components/sign/CheckCode";
-import WaitVerify from "../components/sign/WaitVerify";
+import { Auth } from "../pages/sign-in/SignIn";
+import { Registration } from "../pages/sign-up/SignUp";
+import { CheckCode } from "../pages/sign-in/ParentVerify";
+import WaitVerify from "../pages/sign-in/ChildVerify";
 
 function NotFound() {
   const navigate = useNavigate();

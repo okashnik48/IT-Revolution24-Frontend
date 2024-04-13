@@ -2,7 +2,7 @@ import { Button } from "antd";
 import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
-import "./CheckCode.scss";
+import "./check-code.scss";
 import userService from "../../services/user.service";
 import { useAppDispatch } from "../../store/store-hooks";
 import { SetIsRegistered } from "../../store/slices/user";

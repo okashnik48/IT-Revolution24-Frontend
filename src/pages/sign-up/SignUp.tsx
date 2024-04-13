@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
@@ -11,66 +11,56 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../store/store-hooks";
 import { SetState } from "../../store/slices/user";
+import AuthContainer from "../../components/auth-container/AuthContainer";
+import styles from "./sign-up.module.scss";
 
 type RegistrationProps = {
   username: string;
-  role: "parent" | "child" ;
+  role: "parent" | "child";
   email: string;
   password: string;
 };
+const email =
+  /^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
+
+const schema = yup.object().shape({
+  username: yup.string().required("Enter your username"),
+  role: yup.string().required("Choose your role"),
+  password: yup.string().required("Enter your password"),
+  email: yup.string().matches(email, "Enter a valid url"),
+});
 
 export const Registration: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const email =
-    /^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
 
-  const schema = yup.object().shape({
-    username: yup.string().required("Enter your username"),
-    role: yup.string().required("Choose your role"),
-    password: yup.string().required("Enter your password"),
-    email: yup.string().matches(email, "Enter a valid url"),
+  const { control, watch, handleSubmit } = useForm<RegistrationProps>({
+    defaultValues: {
+      username: "",
+      role: "parent",
+      email: "",
+    },
+    resolver: yupResolver(schema) as any,
   });
-  const { control, handleSubmit, getValues, setValue } =
-    useForm<RegistrationProps>({
-      defaultValues: {
-        username: "",
-        role: "parent",
-        email: "",
-      },
-      resolver: yupResolver(schema) as any,
-    });
+
   const [authHandller] = userService.useRegistrationMutation();
+
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    authHandller(formData).then((data) =>{
-      dispatch(SetState(data.data))
-      if (formData.role === "parent") navigate("/verify");
-      else navigate("/waiting");
-    })
+    authHandller(formData)
+      .unwrap()
+      .then((data) => {
+        dispatch(SetState(data));
+        if (formData.role === "parent") navigate("/verify");
+        else navigate("/waiting");
+      });
   };
+
+  const role = watch("role");
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-      }}
-    >
-    
-      <div
-        style={{
-          display: "flex",
-          width: "20%",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "1%",
-          minHeight: "5%",
-        }}
-      >
+    <AuthContainer>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <Typography.Title level={2}>Sign Up</Typography.Title>
         <CoreInput
           control={control}
           size="large"
@@ -81,17 +71,7 @@ export const Registration: FC = () => {
           isAllowClear={true}
           style={{ fontSize: "20px" }}
         />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "20%",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "1%",
-          height: "5%",
-        }}
-      >
+
         <CoreInput
           control={control}
           size="large"
@@ -102,43 +82,20 @@ export const Registration: FC = () => {
           isAllowClear={true}
           style={{ fontSize: "20px" }}
         />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "20%",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "1%",
-          height: "5%",
-        }}
-      >
-        {/* Додати ререндер при змін */}
+
         <CoreInput
           control={control}
           size="large"
           label="email"
           name="email"
           placeholder={
-            getValues("role") === "parent"
-              ? "Write your email"
-              : "Write your parent email"
+            role === "parent" ? "Write your email" : "Write your parent email"
           }
           type="text"
           isAllowClear={true}
           style={{ fontSize: "20px" }}
         />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          width: "20%",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "1%",
-          height: "5%",
-        }}
-      >
+
         <CoreCheckBox
           control={control}
           size="large"
@@ -149,21 +106,10 @@ export const Registration: FC = () => {
           isAllowClear={true}
           style={{ fontSize: "20px" }}
         />
-      </div>
-      <Button
-        type="primary"
-        htmlType="submit"
-        style={{
-          marginTop: "1%",
-          fontSize: "20px",
-          width: "20%",
-          height: "50px",
-          fontWeight: "bold",
-          borderRadius: "10px",
-        }}
-      >
-        Confirm
-      </Button>
-    </form>
+        <Button type="primary" htmlType="submit">
+          Confirm
+        </Button>
+      </form>
+    </AuthContainer>
   );
 };

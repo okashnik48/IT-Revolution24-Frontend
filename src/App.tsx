@@ -1,39 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ROUTES_CONFIG } from "./configs/routers-config";
-import { useAppSelector } from "./store/store-hooks";
 import "./scss/main.scss";
+import { useAppDispatch, useAppSelector } from "./store/store-hooks";
+import userService, { Tokens } from "./services/user.service";
+import { SetTokens, SetUserInfo } from "./store/slices/user";
 
 function App() {
   const userRole = useAppSelector((state) => state.user.user.role);
   const isRegistered = useAppSelector((state) => state.user.user.isRegistered);
 
-  const isPublic = !userRole || !isRegistered;
-  // if (!userRole || !isRegistered) {
-  // return (
-  //   // <BrowserRouter>
-  // //   <Routes>
-  //     {ROUTES_CONFIG.public.map(({ element, path }) => (
-  //       <Route key={path} path={path} element={element} />
-  //     ))}
-  //   </Routes>
-  // </BrowserRouter>
-  // );
-  // }
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const storedTokensString = localStorage.getItem("tokens");
+    const storedTokens: Tokens | null = storedTokensString
+      ? JSON.parse(storedTokensString)
+      : null;
+
+    if (storedTokens !== null) {
+      const { accessToken, refreshToken } = storedTokens;
+      dispatch(SetTokens({ accessToken, refreshToken }));
+
+      dispatch(userService.endpoints.getUserInfo.initiate(null))
+        .unwrap()
+        .then((data) => {
+          dispatch(SetUserInfo(data));
+        });
+    } else {
+      console.error("No tokens found in localStorage");
+    }
+  }, []);
+
+  if (!userRole || !isRegistered) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          {ROUTES_CONFIG.public.map(({ element, path }, index) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        {isPublic
-          ? ROUTES_CONFIG.public.map(({ element, path }) => (
-              <Route key={path} path={path} element={element} />
-            ))
-          : ROUTES_CONFIG.private[userRole].map(({ element, path }) => (
-              <Route key={path} path={path} element={element} />
-            ))}
-        {/* {ROUTES_CONFIG.private[userRole].map(({ element, path }) => (
+        {ROUTES_CONFIG.private[userRole].map(({ element, path }, index) => (
           <Route key={path} path={path} element={element} />
-        ))} */}
+        ))}
       </Routes>
     </BrowserRouter>
   );

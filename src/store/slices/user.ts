@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Tokens, User } from '../../services/user.service';
+import { Tokens, UserProps } from '../../services/user.service';
 
 interface UserState {
-  user: User,
+  user: UserProps,
   tokens: Tokens
 }
 
@@ -23,10 +23,13 @@ const UserSlice = createSlice({
     }
   } as UserState,
   reducers: {
-    SetState: (state, action: PayloadAction<UserState>) => {
-        state.user = action.payload.user
-        state.tokens = action.payload.tokens
+    SetUserInfo: (state, action: PayloadAction<UserProps>) => {
+        state.user = action.payload
     },
+    
+    SetTokens: (state, action: PayloadAction<Tokens>) => {
+      state.tokens = action.payload
+  },
     SetIsRegistered: (state, action: PayloadAction<boolean>) =>{
         state.user.isRegistered = action.payload;
     }
@@ -35,7 +38,7 @@ const UserSlice = createSlice({
 
 
 
-export const { SetState, SetIsRegistered} = UserSlice.actions;
+export const { SetUserInfo, SetTokens, SetIsRegistered} = UserSlice.actions;
 
 
 

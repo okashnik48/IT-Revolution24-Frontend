@@ -18,13 +18,13 @@ const Fish: React.FC<{ image: string, aquariumSize: {minX: number, minY: number,
     const [fishCoords, setFishCoords] = useState<FishState>({
         x: Math.random() * (maxX - minX) + minX,
         xDirection: 'right',
-        xChanceToChangeDirection: Math.random() * 10, // исправление
+        xChanceToChangeDirection: Math.random() * 10, 
         y: Math.random() * (maxY - minY) + minY,
         yDirection: 'down',
-        yChanceToChangeDirection: Math.random() * 10, // исправление
+        yChanceToChangeDirection: Math.random() * 10, 
         z: 0,
         zDirection: 'forward',
-        zChanceToChangeDirection: Math.random() * 10, // исправление
+        zChanceToChangeDirection: Math.random() * 10, 
     });
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Fish: React.FC<{ image: string, aquariumSize: {minX: number, minY: number,
                 xDirection: Math.random() * 10 < prevProps.xChanceToChangeDirection ? 'left' : 'right',
                 yDirection: Math.random() * 10 < prevProps.yChanceToChangeDirection ? 'up' : 'down',
             }));
-        }, 100);
+        }, 1000);
         
         return () => clearInterval(intervalId);
     }, []);

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Badge, Button, FloatButton } from "antd";
+import { Badge, Button } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
 import ModalWarningInfo from "./ModalWarningInfo";
+import "./styles/ChildInfo.scss";
 
 type Props = {
   child: {
@@ -21,25 +22,12 @@ export const ChildInfo = ({ child }: Props) => {
   const DeleteUserHandler = (id: string) => {
     console.log(id);
   };
+
   return (
     <>
-      <div
-        className="long-card"
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          padding: "10px",
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-          margin: "5px 0",
-          fontSize: "25px",
-        }}
-      >
-        <div className="user-info" style={{ marginRight: "20px" }}>
-          <div className="username" style={{ fontWeight: "bold" }}>
-            {child.username}
-          </div>
+      <div className="long-card">
+        <div className="user-info">
+          <div className="username">{child.username}</div>
           <div className="money">Money: {child.money}</div>
         </div>
         <div className="fish-counts">
@@ -51,14 +39,10 @@ export const ChildInfo = ({ child }: Props) => {
           <Button
             icon={<CheckOutlined />}
             type="primary"
-            style={{
-              backgroundColor:
-                child.newMessages.length === 0 ? "green" : "gray",
-              borderRadius: "50%",
-            }}
             onClick={() => {
-                setIsModalWarningInfo(true)
+              setIsModalWarningInfo(true);
             }}
+            className={child.newMessages.length > 0 ? "warning-button" : ""}
           />
         </Badge>
 
@@ -72,7 +56,13 @@ export const ChildInfo = ({ child }: Props) => {
           DELETE
         </Button>
       </div>
-      {child.newMessages.length > 0 &&<ModalWarningInfo isModalWarningInfo = {isModalWarningInfo} setIsModalWarningInfo = {setIsModalWarningInfo} warnings = {child.newMessages}/>} 
+      {child.newMessages.length > 0 && (
+        <ModalWarningInfo
+          isModalWarningInfo={isModalWarningInfo}
+          setIsModalWarningInfo={setIsModalWarningInfo}
+          warnings={child.newMessages}
+        />
+      )}
     </>
   );
 };

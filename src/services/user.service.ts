@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { serviceApi } from "./app.service";
 
 type InfoForRegistration = {
@@ -36,6 +37,12 @@ const userService = serviceApi.injectEndpoints({
                 method: 'POST',
                 body: body
             }),
+            async onQueryStarted(arg, api) {
+                api.queryFulfilled
+                  .catch((data ) => {
+                    toast.error("data");
+                  });
+              },
         }), 
         registration: builder.mutation<{tokens: Tokens} , InfoForRegistration >({
             query: (body) => ({
@@ -43,6 +50,12 @@ const userService = serviceApi.injectEndpoints({
                 method: 'POST',
                 body: body
             }),
+            async onQueryStarted(arg, api) {
+                api.queryFulfilled
+                  .catch((data ) => {
+                    toast.error("data");
+                  });
+              },
         }),
         getUserInfo: builder.query<UserProps ,null >({
             query: (body) => ({

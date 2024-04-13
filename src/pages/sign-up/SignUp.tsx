@@ -50,13 +50,14 @@ export const Registration: FC = () => {
       .unwrap()
       .then((data) => {
         dispatch(SetTokens(data.tokens))
+        console.log("$56456")
         localStorage.setItem(
           "tokens",
           JSON.stringify(data.tokens)
         );
         if (formData.role === "parent") navigate("/verify");
         else navigate("/waiting");
-      });
+      })
   };
 
   const role = watch("role");

@@ -45,6 +45,7 @@ export const Auth: FC = () => {
       .unwrap()
       .then((data) => {
         dispatch(SetTokens(data.tokens));
+        console.log("$56456")
         localStorage.setItem(
           "tokens",
           JSON.stringify(data.tokens)
@@ -52,7 +53,9 @@ export const Auth: FC = () => {
         getUserInfoHandler(null).unwrap().then((value) => {
           dispatch(SetUserInfo(value))
         })
-      });
+      }).catch(() =>{
+        console.log("33333333")
+      })
   };
 
   return (

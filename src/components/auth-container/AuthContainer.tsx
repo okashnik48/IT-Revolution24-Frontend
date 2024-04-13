@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import styles from "./auth-container.module.scss";
-import Image from "../../assets/auth.png";
+import Image from "../../assets/logo.png";
 import { Typography } from "antd";
 
 function AuthContainer({ children }: PropsWithChildren) {

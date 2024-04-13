@@ -1,0 +1,41 @@
+@use "../../scss/general" as *;
+
+.aquarium {
+  background-image: url("../../assets/underwater-background.webp");
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-origin: content-box;
+
+  display: flex;
+  flex: 4 0 0;
+
+  background-attachment: fixed;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.panel {
+  overflow: hidden;
+  display: flex;
+  flex: 1.5 1 0;
+  padding: 8px;
+  flex-direction: column;
+  background-color: $color-text-secondary;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}

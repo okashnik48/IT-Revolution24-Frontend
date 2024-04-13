@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
 
 import userService from "../../services/user.service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CoreCheckBox } from "../../ui-kit/CoreCheckBox";
 
 import * as yup from "yup";
@@ -114,6 +114,10 @@ export const Registration: FC = () => {
         <Button type="primary" htmlType="submit">
           Confirm
         </Button>
+
+        <Typography.Paragraph>
+          Already have an account? <Link to="/login">Sign In</Link>
+        </Typography.Paragraph>
       </form>
     </AuthContainer>
   );

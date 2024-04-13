@@ -12,7 +12,6 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import BotMessage from "./messages/BotMessage";
 import UserMessage from "./messages/UserMessage";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import SmsIcon from "@mui/icons-material/Sms";
 type Props = {};
 
@@ -46,10 +45,19 @@ export default function Chat({}: Props) {
           display: "flex",
         }}
       >
-        <Stack direction="column" overflow="auto" padding="25px">
-          <BotMessage message="Hello" />
+        <Stack
+          direction="column"
+          gap={1}
+          overflow="auto"
+          padding="25px"
+          sx={{
+            border: "1px solid #5c5c5c",
+            borderRadius: "10px",
+          }}
+        >
+          <BotMessage message="Hellossssssssssnhjcbsohcjshcjbcjhshscbhcskbckj" />
 
-          <UserMessage message="Hello" />
+          <UserMessage message="Hellossssssssssnhjcbsohcjshcjbcjhshscbhcskbckj" />
           <BotMessage message="Hello" />
 
           <UserMessage message="Hello" />

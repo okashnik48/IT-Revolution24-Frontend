@@ -1,19 +1,16 @@
 import "./style.css";
-import styles from "./aquarium.module.scss";
-import Button from "@mui/material/Button";
+import styles from "./game.module.scss";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import TextField from "@mui/material/TextField";
 import Chat from "./chat/Chat";
 import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import Aquarium from "./aquarium/Aquarium";
 
 const Game = () => {
   return (
     <div className={styles.container}>
-      {/* <div className={styles.header}>
-      </div> */}
       <div className={styles.panel}>
         <Stack
           direction="row"
@@ -62,7 +59,9 @@ const Game = () => {
         </Stack>
         <Chat />
       </div>
-      <div className={styles.aquarium}></div>
+      <div className={styles.aquarium}>
+        <Aquarium />
+      </div>
     </div>
   );
 };

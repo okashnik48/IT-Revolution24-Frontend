@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ROUTES_CONFIG } from "./configs/routers-config";
 import { Registration } from "./components/sign/Registration";
 import Aquarium from "./components/game/Aquarium";
+import ChildList from "./components/parent/ChildList";
 
 type RoleProps = "parent" | "child" | undefined;
 
@@ -32,7 +33,7 @@ function App() {
   // </BrowserRouter>
   // );
   return (
-    <Aquarium />
+    <ChildList />
   )
 }
 

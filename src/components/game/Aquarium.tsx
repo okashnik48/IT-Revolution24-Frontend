@@ -25,8 +25,8 @@ const Aquarium = () => {
 
   return (
     <div>
-
-      <Fish image='./images/tiny-small-pixel-fish-aquarium-animated-gif-picture-10.gif' aquariumSize={{ minX: dimensions.width / 5, minY: dimensions.width / 5, maxX: dimensions.width, maxY: dimensions.height }} />
+        <img src = "./images/aquarium.png" alt = "aquarium"/>
+      <Fish image='./images/tiny-small-pixel-fish-aquarium-animated-gif-picture-11.gif' aquariumSize={{ minX: dimensions.width / 5, minY: dimensions.width / 5, maxX: dimensions.width, maxY: dimensions.height }} />
     </div>
   );
 };

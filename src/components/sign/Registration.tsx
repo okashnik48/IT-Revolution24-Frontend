@@ -40,7 +40,9 @@ const schema = yup.object().shape({
     const [authHandller, data ] = userService.useRegistrationMutation()
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
     // authHandller({phone: formData.phoneNumber, username: formData.username})
-    console.log(formData);
+    // console.log(formData);
+    if (formData.role === "parent") navigate("/verify");
+    else navigate("/waiting")
   };
   return (
     <form

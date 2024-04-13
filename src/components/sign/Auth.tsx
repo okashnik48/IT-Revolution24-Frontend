@@ -3,22 +3,33 @@ import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
 
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import userService from "../../services/user.service";
 
 type RegistrationProps = {
-  phoneNumber: string;
+  username: string;
+  password: string;
 };
 
 export const Auth: FC = () => {
+  const schema = yup.object().shape({
+    username: yup.string().required('Enter your username'),
+    password: yup.string().required("Enter your password"),
+  });
   const { control, handleSubmit, getValues, setValue } =
     useForm<RegistrationProps>({
       defaultValues: {
-        phoneNumber: "",
+        username: "",
+        password: ""
       },
+      resolver: yupResolver(schema) as any,
     });
   const [authHandller ] = userService.useRegistrationMutation()
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
     //authHandller(formData.phoneNumber);
+    console.log(formData)
   };
   return (
     <form
@@ -50,9 +61,29 @@ export const Auth: FC = () => {
         <CoreInput
           control={control}
           size="large"
-          label="userName"
-          name="userName"
-          placeholder="Write your userName"
+          label="username"
+          name="username"
+          placeholder="Write your username"
+          type="text"
+          isAllowClear={true}
+          style={{ fontSize: "20px" }}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          width: "20%",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "1%",
+        }}
+      >
+        <CoreInput
+          control={control}
+          size="large"
+          label="password"
+          name="password"
+          placeholder="Write your password"
           type="text"
           isAllowClear={true}
           style={{ fontSize: "20px" }}

@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
 
-import "react-phone-number-input/style.css";
 import userService from "../../services/user.service";
 import { useNavigate } from "react-router-dom";
 type RegistrationProps = {
@@ -18,16 +17,17 @@ export const CheckCode: FC = () => {
         checkCode: "",
       },
     });
-    const {data, refetch: agaraGydjy} = userService.useVerifyQuery(getValues("checkCode"))
-      const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-        console.log(formData.checkCode)
-        agaraGydjy().then(() =>{
-          navigate("/yra")
-        }).catch(() =>{
-          alert("werwer")
-        })
-    console.log(formData);
-  };
+  //   const {data, refetch: agaraGydjy} = userService.useVerifyQuery("")
+  //     const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
+  //       console.log(formData.checkCode)
+  //       agaraGydjy().then(() =>{
+  //         navigate("/yra")
+  //       }).catch(() =>{
+  //         alert("werwer")
+  //       })
+  //   console.log(formData);
+  // };
+  const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {}
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

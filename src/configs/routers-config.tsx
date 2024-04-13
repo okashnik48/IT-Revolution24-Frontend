@@ -3,6 +3,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "../components/sign/Auth";
 import { Registration } from "../components/sign/Registration";
+import { CheckCode } from "../components/sign/CheckCode";
+import WaitVerify from "../components/sign/WaitVerify";
 
 function NotFound() {
   const navigate = useNavigate();
@@ -34,6 +36,14 @@ export const ROUTES_CONFIG = {
     {
       path: "/login",
       element: <Auth />,
+    },
+    {
+      path: "/verify",
+      element: <CheckCode />,
+    },
+    {
+      path: "/waiting",
+      element: <WaitVerify />,
     },
     {
       path: "*",

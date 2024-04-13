@@ -5,7 +5,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import TextField from "@mui/material/TextField";
 import Chat from "./chat/Chat";
-import { Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
@@ -34,20 +34,30 @@ const Game = () => {
           <Stack direction="row" alignItems="center" spacing={1} paddingY={1}>
             <Stack direction="row" alignItems="center">
               <MonetizationOnIcon color="warning" />
-              <Typography variant="h6" color="white">
-                1000$
-              </Typography>
+              <Tooltip title="Balance">
+                <Typography
+                  variant="h6"
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  color="white"
+                >
+                  1000$
+                </Typography>
+              </Tooltip>
             </Stack>
-            <Button
-              variant="outlined"
-              color="warning"
-              startIcon={<ShoppingBasketIcon />}
-            >
-              Shop
-            </Button>
-            <Button variant="outlined" color="error" startIcon={<LogoutIcon />}>
-              Logout
-            </Button>
+
+            <Tooltip title="Shop">
+              <IconButton color="warning">
+                <ShoppingBasketIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Logout">
+              <IconButton color="error">
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
         <Chat />

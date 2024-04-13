@@ -31,8 +31,8 @@ export default function Chat({}: Props) {
     <>
       <Stack direction="row" alignItems="center" spacing={1} paddingY={1}>
         <SmsIcon fontSize="large" color="warning" />
-        <Typography variant="h5" color="white">
-          Chat
+        <Typography variant="h6" color="white">
+          Aqualya Chat
         </Typography>
       </Stack>
       <Stack

@@ -41,8 +41,8 @@ const Fish: React.FC<{ image: string, aquariumSize: {minX: number, minY: number,
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const xSpeed = fishCoords.xDirection === 'right' ? 5 : -5;
-            const ySpeed = fishCoords.yDirection === 'down' ? 5 : -5;
+            const xSpeed = fishCoords.xDirection === 'right' ? 2 : -2;
+            const ySpeed = fishCoords.yDirection === 'down' ? 2 : -2;
             const newX = fishCoords.x + xSpeed;
             const newY = fishCoords.y + ySpeed;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Result } from 'antd';
 
-const WaitVerify: React.FC = () => {
+const ChildVerify: React.FC = () => {
     return (
         <div style = {{display: 'flex', alignItems: "center", justifyContent: "center", flexDirection: 'column'}}>
             <img src="images/waiting.png" alt="waiting" style={{ width: '15%', height: '15%' }} />
@@ -19,4 +19,4 @@ const WaitVerify: React.FC = () => {
     )
 }
 
-export default WaitVerify;
+export default ChildVerify;

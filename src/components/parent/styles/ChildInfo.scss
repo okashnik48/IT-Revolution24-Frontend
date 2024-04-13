@@ -1,0 +1,53 @@
+.long-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0;
+    font-size: 25px;
+  
+    .user-info {
+      margin-right: 20px;
+  
+      .username {
+        font-weight: bold;
+      }
+    }
+  
+    .fish-counts {
+      div {
+        margin-bottom: 5px;
+      }
+    }
+  
+    .ant-badge {
+      .ant-btn {
+        border-radius: 50%;
+  
+        &.ant-btn-primary {
+          background-color: green;
+          &:hover,
+          &:focus {
+            background-color: darkgreen;
+          }
+        }
+        &.warning-button {
+            background-color: gray;
+            &:hover,
+            &:focus {
+              background-color: gray;
+            }
+          }
+        &.ant-btn-primary.ant-btn-background-ghost {
+          background-color: gray;
+          &:hover,
+          &:focus {
+            background-color: darkgray;
+          }
+        }
+      }
+    }
+  }
+  

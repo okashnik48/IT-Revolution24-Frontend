@@ -41,8 +41,7 @@ const AquariumLogo = ({
         x="10"
         y="40"
         fontWeight="bold"
-      >
-      </text>
+      ></text>
     </svg>
   );
 };
@@ -53,7 +52,7 @@ type RegistrationProps = {
 };
 
 export const Auth: FC = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const schema = yup.object().shape({
     username: yup.string().required("Enter your username"),
     password: yup.string().required("Enter your password"),
@@ -69,10 +68,11 @@ export const Auth: FC = () => {
   const [authHandller] = userService.useLoginMutation();
 
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    authHandller(formData).then((data) =>{
-      console.log(data)
-      dispatch(SetState(data.data))
-    })
+    authHandller(formData)
+      .unwrap()
+      .then((data) => {
+        dispatch(SetState(data));
+      });
   };
 
   return (
@@ -104,7 +104,11 @@ export const Auth: FC = () => {
             isAllowClear={true}
             style={{ fontSize: "20px" }}
           />
-          <Button type="primary" htmlType="submit" style={{height: "50px", fontSize: "17px"}}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ height: "50px", fontSize: "17px" }}
+          >
             Confirm
           </Button>
         </form>

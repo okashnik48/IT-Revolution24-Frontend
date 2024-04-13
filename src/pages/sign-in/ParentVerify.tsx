@@ -2,7 +2,6 @@ import { Button } from "antd";
 import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
-import { useNavigate } from "react-router-dom";
 import "./CheckCode.scss";
 import userService from "../../services/user.service";
 import { useAppDispatch } from "../../store/store-hooks";

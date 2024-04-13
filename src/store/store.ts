@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { serviceApi } from "../services/app.service";
-import { ChatInfoReducer as chatInfo} from "./slices/chatInfo";
+import { UserInfoReducer as user} from "./slices/user";
 
 export const store = configureStore({
 	reducer: combineReducers({
 	  [serviceApi.reducerPath]: serviceApi.reducer,
-	  chatInfo
+	  user
 
 	}),
 	middleware: (getDefaultMiddleware) =>

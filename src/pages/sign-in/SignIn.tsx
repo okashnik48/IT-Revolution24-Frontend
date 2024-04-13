@@ -7,9 +7,14 @@ import styles from "./sign-in.module.scss";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import userService from "../../services/user.service";
 import { Typography } from "antd";
 import Image from "../../assets/auth.png";
+
+import userService from "../../services/user.service";
+import { SetState } from "../../store/slices/user";
+import { useAppDispatch } from "../../store/store-hooks";
+
+import { LoginReply } from "../../services/user.service";
 
 const AquariumLogo = ({
   primaryColor = "rgb(0,123,255)",
@@ -48,6 +53,7 @@ type RegistrationProps = {
 };
 
 export const Auth: FC = () => {
+  const dispatch = useAppDispatch()
   const schema = yup.object().shape({
     username: yup.string().required("Enter your username"),
     password: yup.string().required("Enter your password"),
@@ -60,10 +66,13 @@ export const Auth: FC = () => {
       },
       resolver: yupResolver(schema) as any,
     });
-  const [authHandller] = userService.useRegistrationMutation();
+  const [authHandller] = userService.useLoginMutation();
+
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    //authHandller(formData.phoneNumber);
-    console.log(formData);
+    authHandller(formData).then((data) =>{
+      console.log(data)
+      dispatch(SetState(data.data))
+    })
   };
 
   return (
@@ -95,7 +104,7 @@ export const Auth: FC = () => {
             isAllowClear={true}
             style={{ fontSize: "20px" }}
           />
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{height: "50px", fontSize: "17px"}}>
             Confirm
           </Button>
         </form>

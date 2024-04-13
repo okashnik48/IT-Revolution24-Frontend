@@ -4,13 +4,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { CoreInput } from "../../ui-kit/CoreInput";
 import { useNavigate } from "react-router-dom";
 import "./CheckCode.scss";
+import userService from "../../services/user.service";
+import { useAppDispatch } from "../../store/store-hooks";
+import { SetIsRegistered } from "../../store/slices/user";
 
 type RegistrationProps = {
   checkCode: string;
 };
 
 export const CheckCode: FC = () => {
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const { control, handleSubmit } =
     useForm<RegistrationProps>({
       defaultValues: {
@@ -18,8 +21,12 @@ export const CheckCode: FC = () => {
       },
     });
 
+    const [verifyCodeHandller] = userService.useVerifyCodeMutation();
+
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    // Your form submission logic here
+    verifyCodeHandller(parseInt(formData.checkCode)).then(() =>{
+      dispatch(SetIsRegistered(true))
+    })
   };
 
   return (

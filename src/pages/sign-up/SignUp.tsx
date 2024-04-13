@@ -9,15 +9,18 @@ import { CoreCheckBox } from "../../ui-kit/CoreCheckBox";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../../store/store-hooks";
+import { SetState } from "../../store/slices/user";
 
 type RegistrationProps = {
   username: string;
-  role: string;
+  role: "parent" | "child" ;
   email: string;
   password: string;
 };
 
 export const Registration: FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const email =
     /^((https?|ftp):\/\/)?(www.)?(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
@@ -37,12 +40,13 @@ export const Registration: FC = () => {
       },
       resolver: yupResolver(schema) as any,
     });
-  const [authHandller, data] = userService.useRegistrationMutation();
+  const [authHandller] = userService.useRegistrationMutation();
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    // authHandller({phone: formData.phoneNumber, username: formData.username})
-    // console.log(formData);
-    if (formData.role === "parent") navigate("/verify");
-    else navigate("/waiting");
+    authHandller(formData).then((data) =>{
+      dispatch(SetState(data.data))
+      if (formData.role === "parent") navigate("/verify");
+      else navigate("/waiting");
+    })
   };
   return (
     <form

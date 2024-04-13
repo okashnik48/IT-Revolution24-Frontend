@@ -1,36 +1,65 @@
 import { serviceApi } from "./app.service";
 
 type InfoForRegistration = {
-    phone: string;
-    username: string
+    username: string;
+    password: string;
+    email: string;
+    role: "parent" | "child" ; 
 }
 
-type Token = {
-    token: string;
+type InfoForLogin = {
+    username: string;
+    password: string; 
 }
 
+export type User = {
+    id: number;
+    createdAt: Date;
+    name: string;
+    email: string;
+    isRegistered: boolean;
+    role: "parent" | "child" | ""
+};
+
+export type Tokens = {
+    accessToken: string;
+    refreshToken: string;
+};
+
+export type LoginReply = {
+    tokens: Tokens;
+    user: User;
+}
 const userService = serviceApi.injectEndpoints({
     endpoints: (builder) => ({
-        userInfo: builder.query<string , string >({
-            query: () => ({
-                url: 'users/me',
-                method: 'GET',
-            }),
-        }),
-        registration: builder.mutation<null , InfoForRegistration >({
+        login: builder.mutation<LoginReply , InfoForLogin >({
             query: (body) => ({
                 url: '/auth/login',
                 method: 'POST',
                 body: body
             }),
-        }),
-
-        verify: builder.query<Token , null >({
-            query: (id) => ({
-                url: `auth/verify/${id}`,
-                method: 'GET',
+        }), 
+        registration: builder.mutation<LoginReply , InfoForRegistration >({
+            query: (body) => ({
+                url: '/auth/register',
+                method: 'POST',
+                body: body
             }),
         }),
+        verifyCode: builder.mutation<null , number >({
+            query: (body) => ({
+                url: '/auth/code',
+                method: 'POST',
+                body: {code: body}
+            }),
+        }), 
+        refreshTokens: builder.mutation<null , string >({
+            query: (body) => ({
+                url: '/auth/refresh_token',
+                method: 'POST',
+                body: body
+            }),
+        }), 
 
     })
 })

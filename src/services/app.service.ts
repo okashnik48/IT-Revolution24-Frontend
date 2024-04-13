@@ -4,7 +4,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store-hooks";
 
-export const ROOT_URL = "http://35.180.225.96:8080/api";
+export const ROOT_URL = "https://hackaton.dev.m0e.space/api";
 
 
 const baseQuery = fetchBaseQuery({
@@ -16,10 +16,10 @@ const baseQuery = fetchBaseQuery({
 
       if (!state) return headers;
 
-      // const token  = state.user.user.accessToken;
-      // if (token) {
-      //   headers.set("Authorization", `Bearer ${token}`);
-      // }
+      const token  = state.user.tokens.accessToken;
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
 
       
     } catch (error) {

@@ -7,12 +7,13 @@ import { Registration } from "./pages/sign-up/SignUp";
 import Aquarium from "./components/game/Aquarium";
 import ChildList from "./components/parent/ChildList";
 import './scss/main.scss'
+import { useAppSelector } from "./store/store-hooks";
 
-type RoleProps = "parent" | "child" | undefined;
 
 function App() {
-  const [userRole, SetUserRole] = useState<RoleProps>(undefined); 
-  if (!userRole) {
+  const userRole = useAppSelector((state) => state.user.user.role);
+  const isRegistered = useAppSelector((state) => state.user.user.isRegistered)
+  if (!userRole || !isRegistered) {
     return (
       <BrowserRouter>
         <Routes>

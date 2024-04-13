@@ -62,7 +62,19 @@ const Fish: React.FC<{ image: string, aquariumSize: {minX: number, minY: number,
         return () => clearInterval(intervalId);
     }, [fishCoords, maxX, maxY, minX, minY]);
 
-    return <img className="fish" src={image} alt="Fish" style={{ position: 'absolute', left: fishCoords.x, top: fishCoords.y }} />;
+    return (
+        <img 
+            className="fish" 
+            src={image} 
+            alt="Fish" 
+            style={{ 
+                position: 'absolute', 
+                left: fishCoords.x, 
+                top: fishCoords.y, 
+                transform: `rotate(${fishCoords.xDirection === "left" ? 180 : 0}deg)` 
+            }} 
+        />
+    );
 };
 
 export default Fish;

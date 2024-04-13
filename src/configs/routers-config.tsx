@@ -6,7 +6,7 @@ import { Registration } from "../pages/sign-up/SignUp";
 import { CheckCode } from "../pages/sign-in/ParentVerify";
 import ChildVerify from "../pages/sign-in/ChildVerify";
 import ChildList from "../components/parent/ChildList";
-import Aquarium from "../components/game/Aquarium";
+import Game from "../pages/game/Game";
 import { CheckUrl } from "./CheckUrl";
 
 function NotFound() {
@@ -52,7 +52,7 @@ export const ROUTES_CONFIG = {
     },
     {
       path: "*",
-      element: <Registration />,
+      element: <NotFound />,
     },
     {
       path: "/:code",
@@ -68,7 +68,7 @@ export const ROUTES_CONFIG = {
     ],
     child: [      {
       path: "*",
-      element: <Aquarium />,
+      element: <Game />,
     },],
   },
 };

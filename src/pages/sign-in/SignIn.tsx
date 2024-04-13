@@ -11,7 +11,7 @@ import { Typography } from "antd";
 import Image from "../../assets/auth.png";
 
 import userService from "../../services/user.service";
-import { SetState } from "../../store/slices/user";
+import { SetUserInfo, SetTokens } from "../../store/slices/user";
 import { useAppDispatch } from "../../store/store-hooks";
 import { Link } from "react-router-dom";
 import AuthContainer from "../../components/auth-container/AuthContainer";
@@ -38,11 +38,20 @@ export const Auth: FC = () => {
     });
   const [authHandller] = userService.useLoginMutation();
 
+  const [getUserInfoHandler] = userService.useLazyGetUserInfoQuery();
+
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
     authHandller(formData)
       .unwrap()
       .then((data) => {
-        dispatch(SetState(data));
+        dispatch(SetTokens(data.tokens));
+        localStorage.setItem(
+          "tokens",
+          JSON.stringify(data.tokens)
+        );
+        getUserInfoHandler(null).unwrap().then((value) => {
+          dispatch(SetUserInfo(value))
+        })
       });
   };
 

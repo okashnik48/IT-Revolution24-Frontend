@@ -10,7 +10,7 @@ import { CoreCheckBox } from "../../ui-kit/CoreCheckBox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../store/store-hooks";
-import { SetState } from "../../store/slices/user";
+import {  SetTokens } from "../../store/slices/user";
 import AuthContainer from "../../components/auth-container/AuthContainer";
 import styles from "./sign-up.module.scss";
 
@@ -43,13 +43,17 @@ export const Registration: FC = () => {
     resolver: yupResolver(schema) as any,
   });
 
-  const [authHandller] = userService.useRegistrationMutation();
+  const [authHandler] = userService.useRegistrationMutation();
 
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
-    authHandller(formData)
+    authHandler(formData)
       .unwrap()
       .then((data) => {
-        dispatch(SetState(data));
+        dispatch(SetTokens(data.tokens))
+        localStorage.setItem(
+          "tokens",
+          JSON.stringify(data.tokens)
+        );
         if (formData.role === "parent") navigate("/verify");
         else navigate("/waiting");
       });

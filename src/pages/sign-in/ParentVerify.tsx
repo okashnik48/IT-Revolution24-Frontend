@@ -5,7 +5,7 @@ import { CoreInput } from "../../ui-kit/CoreInput";
 import "./check-code.scss";
 import userService from "../../services/user.service";
 import { useAppDispatch } from "../../store/store-hooks";
-import { SetIsRegistered } from "../../store/slices/user";
+import { SetIsRegistered, SetUserInfo } from "../../store/slices/user";
 
 type RegistrationProps = {
   checkCode: string;
@@ -21,10 +21,13 @@ export const CheckCode: FC = () => {
     });
 
     const [verifyCodeHandller] = userService.useVerifyCodeMutation();
+    const [getUserInfoHandler] = userService.useLazyGetUserInfoQuery();
 
   const onSubmit: SubmitHandler<RegistrationProps> = (formData) => {
     verifyCodeHandller(parseInt(formData.checkCode)).then(() =>{
-      dispatch(SetIsRegistered(true))
+      getUserInfoHandler(null).unwrap().then((value) => {
+        dispatch(SetUserInfo(value))
+      })
     })
   };
 

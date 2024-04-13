@@ -12,7 +12,7 @@ type InfoForLogin = {
     password: string; 
 }
 
-export type User = {
+export type UserProps = {
     id: number;
     createdAt: Date;
     name: string;
@@ -26,26 +26,30 @@ export type Tokens = {
     refreshToken: string;
 };
 
-export type LoginReply = {
-    tokens: Tokens;
-    user: User;
-}
+
+
 const userService = serviceApi.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation<LoginReply , InfoForLogin >({
+        login: builder.mutation<{tokens: Tokens} , InfoForLogin >({
             query: (body) => ({
                 url: '/auth/login',
                 method: 'POST',
                 body: body
             }),
         }), 
-        registration: builder.mutation<LoginReply , InfoForRegistration >({
+        registration: builder.mutation<{tokens: Tokens} , InfoForRegistration >({
             query: (body) => ({
                 url: '/auth/register',
                 method: 'POST',
                 body: body
             }),
         }),
+        getUserInfo: builder.query<UserProps ,null >({
+            query: (body) => ({
+                url: '/users/me',
+                method: 'GET',
+            }),
+        }), 
         verifyCode: builder.mutation<null , number >({
             query: (body) => ({
                 url: '/auth/code',

@@ -122,7 +122,7 @@ const PetsShop: React.FC<any> = ({
         }}
       >
         <Typography variant="h4" gutterBottom align="center" color="white">
-          Рибний магазин
+          Pets Shop
         </Typography>
         <Grid container spacing={2} justifyContent="center">
           {fishData.map((fish) => (
@@ -143,7 +143,7 @@ const PetsShop: React.FC<any> = ({
           color="primary"
           sx={{ marginTop: 2, display: "block", margin: "0 auto" }}
         >
-          Закрити
+          Close
         </Button>
       </div>
     </Modal>

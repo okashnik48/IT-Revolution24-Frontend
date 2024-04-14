@@ -16,35 +16,32 @@ function Aquarium() {
 
   const token = useAppSelector((state) => state.user.tokens.accessToken);
 
-  const socketUrl = 'wss://hackaton.dev.m0e.space/api/ws/events';
+  const socketUrl = "wss://hackaton.dev.m0e.space/api/ws/events";
 
-  const {
-    sendJsonMessage,
-    lastJsonMessage,
-    readyState,
-  } = useWebSocket(socketUrl);
+  const { sendJsonMessage, lastJsonMessage, readyState } =
+    useWebSocket(socketUrl);
 
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
-      console.log('Connected to WebSocket server');
+      console.log("Connected to WebSocket server");
       const message = {
-        event: 'auth',
-        data: token
+        event: "auth",
+        data: token,
       };
       sendJsonMessage(message);
     } else if (readyState === ReadyState.CLOSED) {
-      console.log('Disconnected from WebSocket server');
+      console.log("Disconnected from WebSocket server");
     }
   }, [readyState]);
 
-  useEffect(() =>{
-    if (typeof lastJsonMessage === 'object' && lastJsonMessage !== null) {
+  useEffect(() => {
+    if (typeof lastJsonMessage === "object" && lastJsonMessage !== null) {
       addNotification({
-        title: 'Warning',
-        subtitle: 'You need to fid your pets',
+        title: "Warning",
+        subtitle: "You need to fid your pets",
         message: "Fid pets",
-        theme: 'darkblue',
-        native: true // when using native, your OS will handle theming.
+        theme: "darkblue",
+        native: true, // when using native, your OS will handle theming.
       });
       refetch();
     }
@@ -120,7 +117,7 @@ function Aquarium() {
               return (
                 <Tooltip
                   title={
-                    <Stack direction='row' alignItems='center'>
+                    <Stack direction="row" alignItems="center">
                       <HealthAndSafetyIcon />
                       <span>Health: {value.satiety}</span>
                     </Stack>
@@ -137,6 +134,25 @@ function Aquarium() {
                 </Tooltip>
               );
             case "shrimp":
+              return (
+                <Tooltip
+                  title={
+                    <Stack direction="row" alignItems="center">
+                      <HealthAndSafetyIcon />
+                      <span>Health: {value.satiety}</span>
+                    </Stack>
+                  }
+                  key={index}
+                >
+                  <img
+                    key={index}
+                    src="./images/shrimp.png"
+                    width={200}
+                    alt="Fish"
+                    style={style}
+                  />
+                </Tooltip>
+              );
             case "snail":
               return (
                 <Tooltip

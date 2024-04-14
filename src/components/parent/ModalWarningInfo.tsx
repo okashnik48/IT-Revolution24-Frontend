@@ -16,9 +16,9 @@ const ModalWarningInfo = ({
       className="modal-warning-info"
     >
       <h2>Warnings</h2>
-      {warnings.map((warning: string, index: number) => (
+      {warnings.map((warning: any, index: number) => (
         <div key={index} className="warning-item">
-          {warning}
+          {warning.data}
         </div>
       ))}
     </Modal>

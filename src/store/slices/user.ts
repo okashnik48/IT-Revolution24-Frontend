@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Tokens, UserProps } from "../../services/user.service";
+import userService, { Tokens, UserProps } from "../../services/user.service";
 
 interface UserState {
   user: UserProps;
@@ -33,6 +33,11 @@ const UserSlice = createSlice({
     SetIsRegistered: (state, action: PayloadAction<boolean>) => {
       state.user.isRegistered = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(userService.endpoints.getUserInfo.matchFulfilled, (state, payload) => {
+      state.user = payload.payload
+    });
   },
 });
 

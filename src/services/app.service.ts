@@ -1,11 +1,7 @@
-import {
-  createApi,
-  fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store-hooks";
 
 export const ROOT_URL = "https://hackaton.dev.m0e.space/api";
-
 
 const baseQuery = fetchBaseQuery({
   baseUrl: ROOT_URL,
@@ -16,18 +12,15 @@ const baseQuery = fetchBaseQuery({
 
       if (!state) return headers;
 
-      const token  = state.user.tokens.accessToken;
-      console.log(token)
+      const token = state.user.tokens.accessToken;
+      console.log(token);
       if (token) {
-        console.log(token)
+        console.log(token);
         headers.set("Authorization", `Bearer ${token}`);
       }
-
-      
     } catch (error) {
       console.log("fetchBaseQuery", error);
-    }
-    finally{
+    } finally {
       return headers;
     }
   },
@@ -35,7 +28,7 @@ const baseQuery = fetchBaseQuery({
 
 export const serviceApi = createApi({
   baseQuery: baseQuery,
-  tagTypes: ["pets", "tags"],
+  tagTypes: ["pets", "tags", "users"],
   reducerPath: "api",
   refetchOnFocus: false, // true, TRUE only for production
   refetchOnReconnect: true,

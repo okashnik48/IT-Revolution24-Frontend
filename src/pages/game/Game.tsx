@@ -18,23 +18,25 @@ const Game = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const logout = () =>{
-    dispatch(SetTokens({accessToken: "", refreshToken: ""}))
-    dispatch(SetUserInfo({
-      id: 0,
-      createdAt: new Date(),
-      name: "",
-      email: "",
-      isRegistered: false,
-      role: "",
-    }))
+  const logout = () => {
+    dispatch(SetTokens({ accessToken: "", refreshToken: "" }));
+    dispatch(
+      SetUserInfo({
+        id: 0,
+        createdAt: new Date(),
+        name: "",
+        email: "",
+        isRegistered: false,
+        role: "",
+      })
+    );
     navigate("/login");
-    localStorage.clear()
+    localStorage.clear();
     dispatch(serviceApi.util.resetApiState());
-}
+  };
 
   const user = useAppSelector((state) => state.user.user);
-const [isModalWarningInfo, setIsModalWarningInfo] = useState<boolean>();
+  const [isModalWarningInfo, setIsModalWarningInfo] = useState<boolean>();
   return (
     <div className={styles.container}>
       <div className={styles.panel}>
@@ -72,13 +74,17 @@ const [isModalWarningInfo, setIsModalWarningInfo] = useState<boolean>();
 
             <Tooltip title="Shop">
               <IconButton color="warning">
-                <ShoppingBasketIcon onClick = {(() =>{setIsModalWarningInfo(true)})}/>
+                <ShoppingBasketIcon
+                  onClick={() => {
+                    setIsModalWarningInfo(true);
+                  }}
+                />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Logout">
               <IconButton color="error">
-                <LogoutIcon onClick = {logout}/>
+                <LogoutIcon onClick={logout} />
               </IconButton>
             </Tooltip>
           </Stack>
@@ -88,7 +94,10 @@ const [isModalWarningInfo, setIsModalWarningInfo] = useState<boolean>();
       <div className={styles.aquarium}>
         <Aquarium />
       </div>
-      <PetsShop setIsModalWarningInfo = {setIsModalWarningInfo} isModalWarningInfo = {isModalWarningInfo}/>
+      <PetsShop
+        setIsModalWarningInfo={setIsModalWarningInfo}
+        isModalWarningInfo={isModalWarningInfo}
+      />
     </div>
   );
 };

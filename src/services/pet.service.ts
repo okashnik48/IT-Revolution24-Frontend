@@ -1,6 +1,7 @@
 import { serviceApi } from "./app.service";
 
-interface Fish {
+
+interface Pets {
     id: number;
     type: string;
     sex: string;
@@ -13,11 +14,12 @@ interface Fish {
 
 const petService = serviceApi.injectEndpoints({
     endpoints: (builder) => ({
-        getPets: builder.query<Fish[] , null >({
+        getPets: builder.query<Pets[] , null >({
             query: (body) => ({
                 url: '/pets',
                 method: 'GET',
             }),
+            invalidatesTags: ["pets"],
         }), 
         sellPet: builder.mutation<null , {petId: string } >({
             query: (body) => ({
@@ -25,6 +27,7 @@ const petService = serviceApi.injectEndpoints({
                 method: 'POST',
                 body: body
             }),
+            providesTags: ["pets"],
         }),
     })
 })

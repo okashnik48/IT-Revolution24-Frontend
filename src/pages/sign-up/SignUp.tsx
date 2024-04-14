@@ -57,7 +57,7 @@ export const Registration: FC = () => {
         );
         if (formData.role === "parent") navigate("/verify");
         else navigate("/waiting");
-      })
+      }).catch(() => {})
   };
 
   const role = watch("role");

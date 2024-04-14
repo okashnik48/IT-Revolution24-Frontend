@@ -19,7 +19,8 @@ export type UserProps = {
     name: string;
     email: string;
     isRegistered: boolean;
-    role: "parent" | "child" | ""
+    role: "parent" | "child" | "";
+    balance?: number
 };
 
 export type Tokens = {
@@ -62,6 +63,7 @@ const userService = serviceApi.injectEndpoints({
                 url: '/users/me',
                 method: 'GET',
             }),
+            providesTags["pets"]
         }), 
         verifyCode: builder.mutation<null , number >({
             query: (body) => ({

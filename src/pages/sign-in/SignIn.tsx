@@ -13,7 +13,7 @@ import Image from "../../assets/auth.png";
 import userService from "../../services/user.service";
 import { SetUserInfo, SetTokens } from "../../store/slices/user";
 import { useAppDispatch } from "../../store/store-hooks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContainer from "../../components/auth-container/AuthContainer";
 
 
@@ -24,6 +24,7 @@ type RegistrationProps = {
 
 export const Auth: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const schema = yup.object().shape({
     username: yup.string().required("Enter your username"),
     password: yup.string().required("Enter your password"),
@@ -51,8 +52,9 @@ export const Auth: FC = () => {
           JSON.stringify(data.tokens)
         );
         getUserInfoHandler(null).unwrap().then((value) => {
-          dispatch(SetUserInfo(value))
-        })
+          dispatch(SetUserInfo(value));
+          navigate(value.role === "parent" ? "/childList" : "/game");
+      });
       }).catch(() =>{
         console.log("33333333")
       })

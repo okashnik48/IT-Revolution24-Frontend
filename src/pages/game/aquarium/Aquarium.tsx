@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import petService from "../../../services/pet.service";
-import "../game.module.scss"
+import "../game.module.scss";
 import { toast } from "react-toastify";
+import { Tooltip } from "@mui/material";
+import { Stack } from "@mui/system";
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
 
 function Aquarium() {
   const { data } = petService.useGetPetsQuery(null);
   const [fidPetsHandler] = petService.useFidPetsMutation();
   const [showPlus, setShowPlus] = useState(false);
 
+  console.debug("Aquarium data", data);
 
   const handleClick = (event: any) => {
     const plusElement = document.createElement("div");
@@ -21,7 +25,7 @@ function Aquarium() {
 
     setShowPlus(true);
     fidPetsHandler(null);
-    toast.success("you fid your pets")
+    toast.success("you fid your pets");
     setTimeout(() => {
       document.body.removeChild(plusElement);
       setShowPlus(false);
@@ -36,7 +40,7 @@ function Aquarium() {
           alignItems: "center",
           justifyContent: "center",
           minHeight: "100%",
-          minWidth: "100%"
+          minWidth: "100%",
         }}
       >
         <img
@@ -50,7 +54,16 @@ function Aquarium() {
     );
   } else {
     return (
-      <div className="container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }} onClick={handleClick}>
+      <div
+        className="container"
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+        }}
+        onClick={handleClick}
+      >
         {data.map((value, index) => {
           const imageWidth = 200;
           const imageHeight = 200;
@@ -62,46 +75,60 @@ function Aquarium() {
           const style = {
             position: "absolute" as const,
             top: `${positionY}px`,
-            left: `${positionX}px`
+            left: `${positionX}px`,
           };
 
           switch (value.type) {
             case "fish":
               return (
-                <img
+                <Tooltip
+                  title={
+                    <Stack direction='row' alignItems='center'>
+                      <HealthAndSafetyIcon />
+                      <span>Health: {value.satiety}</span>
+                    </Stack>
+                  }
                   key={index}
-                  src="./images/fish.png"
-                  width={200}
-                  alt="Fish"
-                  style={style}
-                />
+                >
+                  <img
+                    key={index}
+                    src="./images/fish.png"
+                    width={200}
+                    alt="Fish"
+                    style={style}
+                  />
+                </Tooltip>
               );
             case "shrimp":
-              return (
-                <img
-                  key={index}
-                  src="./images/shrimp.png"
-                  width={200}
-                  alt="Shrimp"
-                  style={style}
-                />
-              );
             case "snail":
               return (
-                <img
+                <Tooltip
+                  title={
+                    <Stack>
+                      <HealthAndSafetyIcon />
+                      <span>Health: {value.satiety}</span>
+                    </Stack>
+                  }
                   key={index}
-                  src="./images/snail.png"
-                  width={200}
-                  alt="Snail"
-                  style={style}
-                />
+                >
+                  <img
+                    key={index}
+                    src="./images/snail.png"
+                    width={200}
+                    alt="Snail"
+                    style={style}
+                  />
+                </Tooltip>
               );
             default:
               return null;
           }
         })}
-        {showPlus && <div style={{ color: "green", fontSize: "50px", fontWeight: "bold" }}>+</div>}
-
+        {showPlus && (
+          <div style={{ color: "green", fontSize: "50px", fontWeight: "bold" }}>
+            +
+          </div>
+        )}
       </div>
     );
   }

@@ -1,30 +1,45 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import {
-  Stack,
-  IconButton,
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  Box,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { Stack, Typography, TextField, IconButton, FormControl, FormLabel } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import SmsIcon from "@mui/icons-material/Sms";
+import { bot_messages } from "./dummy_messages";
 import BotMessage from "./messages/BotMessage";
 import UserMessage from "./messages/UserMessage";
-import SmsIcon from "@mui/icons-material/Sms";
-type Props = {};
 
-export default function Chat({}: Props) {
-  const [message, setMessage] = React.useState("");
+type ChatMessage = {
+  message: string;
+  owner: "user" | "bot";
+};
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
-  };
+export default function Chat() {
+  const [message, setMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const send = () => {
-    console.log("send message", message);
+    const newMessage = { message, owner: "user" } as ChatMessage;
+    const botResponse = {
+      message: bot_messages[Math.floor(Math.random() * bot_messages.length)],
+      owner: "bot",
+    } as ChatMessage;
+
+    setChatMessages((prev) => [...prev, newMessage]);
+    setMessage("");
+
+    setTimeout(() => {
+      setChatMessages((prev) => [...prev, botResponse]);
+    }, 2000);
   };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  }
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatMessages]);
 
   return (
     <>
@@ -36,106 +51,20 @@ export default function Chat({}: Props) {
       </Stack>
       <Stack
         direction="column"
-        justifyContent="flex-end"
+        sx={{ overflowY: "auto", height: "500px", flexGrow: 1 }}
         spacing={2}
-        sx={{
-          overflowY: "hidden",
-          height: "100%",
-          flexGrow: 1,
-          display: "flex",
-        }}
       >
-        <Stack
-          direction="column"
-          gap={1}
-          overflow="auto"
-          padding="25px"
-          sx={{
-            border: "1px solid #5c5c5c",
-            borderRadius: "10px",
-          }}
-        >
-          <BotMessage message="Hellossssssssssnhjcbsohcjshcjbcjhshscbhcskbckj" />
-
-          <UserMessage message="Hellossssssssssnhjcbsohcjshcjbcjhshscbhcskbckj" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-          <BotMessage message="Hello" />
-
-          <UserMessage message="Hello" />
-        </Stack>
-
-        <Stack direction="row" justifyContent="space-between">
+        {chatMessages.map((chatMessage, index) =>
+          chatMessage.owner === "bot" ? (
+            <BotMessage key={index} message={chatMessage.message} />
+          ) : (
+            <UserMessage key={index} message={chatMessage.message} />
+          )
+        )}
+        <div ref={messagesEndRef} />{" "}
+        {/* Invisible div at the end of the messages */}
+      </Stack>
+      <Stack direction="row" justifyContent="space-between">
           <FormControl
             fullWidth
             sx={{
@@ -149,6 +78,11 @@ export default function Chat({}: Props) {
               sx={{ color: "white" }}
             ></FormLabel>
             <TextField
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  send();
+                }
+              }}
               fullWidth
               variant="outlined"
               color="warning"
@@ -170,10 +104,8 @@ export default function Chat({}: Props) {
               placeholder="Type a message"
             />
 
-            <FormHelperText></FormHelperText>
           </FormControl>
         </Stack>
-      </Stack>
     </>
   );
 }

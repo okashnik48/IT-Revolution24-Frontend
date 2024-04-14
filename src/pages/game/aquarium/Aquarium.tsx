@@ -10,7 +10,7 @@ import { useAppSelector } from "../../../store/store-hooks";
 import addNotification from "react-push-notification";
 
 function Aquarium() {
-  const { data } = petService.useGetPetsQuery(null);
+  const { data, refetch } = petService.useGetPetsQuery(null);
   const [fidPetsHandler] = petService.useFidPetsMutation();
   const [showPlus, setShowPlus] = useState(false);
 
@@ -46,6 +46,7 @@ function Aquarium() {
         theme: 'darkblue',
         native: true // when using native, your OS will handle theming.
       });
+      refetch();
     }
   }, [lastJsonMessage]);
 

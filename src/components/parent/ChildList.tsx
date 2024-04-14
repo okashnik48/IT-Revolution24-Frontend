@@ -57,7 +57,8 @@ const ChildList = () => {
           message: "Children problem",
           theme: 'darkblue',
           native: true 
-        });
+        })
+        getArrayOfChildren();
       }
     }, [lastJsonMessage]);
   //     {

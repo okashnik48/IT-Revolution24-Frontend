@@ -5,13 +5,49 @@ import { toast } from "react-toastify";
 import { Tooltip } from "@mui/material";
 import { Stack } from "@mui/system";
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useAppSelector } from "../../../store/store-hooks";
+import addNotification from "react-push-notification";
 
 function Aquarium() {
   const { data } = petService.useGetPetsQuery(null);
   const [fidPetsHandler] = petService.useFidPetsMutation();
   const [showPlus, setShowPlus] = useState(false);
 
-  console.debug("Aquarium data", data);
+  const token = useAppSelector((state) => state.user.tokens.accessToken);
+
+  const socketUrl = 'wss://hackaton.dev.m0e.space/api/ws/events';
+
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+    readyState,
+  } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    if (readyState === ReadyState.OPEN) {
+      console.log('Connected to WebSocket server');
+      const message = {
+        event: 'auth',
+        data: token
+      };
+      sendJsonMessage(message);
+    } else if (readyState === ReadyState.CLOSED) {
+      console.log('Disconnected from WebSocket server');
+    }
+  }, [readyState]);
+
+  useEffect(() =>{
+    if (typeof lastJsonMessage === 'object' && lastJsonMessage !== null) {
+      addNotification({
+        title: 'Warning',
+        subtitle: 'You need to fid your pets',
+        message: "Fid pets",
+        theme: 'darkblue',
+        native: true // when using native, your OS will handle theming.
+      });
+    }
+  }, [lastJsonMessage]);
 
   const handleClick = (event: any) => {
     const plusElement = document.createElement("div");

@@ -10,6 +10,7 @@ import Preloader from "./components/preloader/Preloader";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Notifications } from "react-push-notification";
 
 function App() {
   const userRole = useAppSelector((state) => state.user.user.role);
@@ -60,6 +61,7 @@ function App() {
           ))}
         </Routes>
         <ToastContainer />
+        <Notifications />
       </BrowserRouter>
     );
   }
@@ -72,6 +74,7 @@ function App() {
         ))}
       </Routes>
       <ToastContainer />
+      <Notifications />
     </BrowserRouter>
   );
 }

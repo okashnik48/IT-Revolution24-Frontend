@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 
 import { Button, Col, Empty, Input, Row } from "antd";
 import { ChildInfo } from "./ChildInfo";
-import { io } from "socket.io-client";
 import parentService from "../../services/parent.service";
 import { toast } from "react-toastify";
 import { color } from "@mui/system";
@@ -13,44 +12,54 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { serviceApi } from "../../services/app.service";
 import { SetTokens, SetUserInfo } from "../../store/slices/user";
 import {useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/store-hooks";
+import { useAppDispatch, useAppSelector } from "../../store/store-hooks";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import addNotification from "react-push-notification";
 const ChildList = () => {
-  const socket = io("https://waisys.dev.m0e.space/", {
-    transports: ["websocket"],
-  });
 
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const token = useAppSelector((state) => state.user.tokens.accessToken);
+
   const { data: arrayOfChildren, refetch: getArrayOfChildren } =
     parentService.useGetChildrensQuery(null);
 
-  console.debug(arrayOfChildren);
+    const socketUrl = 'wss://hackaton.dev.m0e.space/api/ws/events';
 
-  useEffect(() => {
-    function onConnect() {
-      console.log("Connect");
-      setIsConnected(true);
-    }
+    // Приймання та відправлення повідомлень
+    const {
+      sendJsonMessage,
+      lastJsonMessage,
+      readyState,
+    } = useWebSocket(socketUrl);
+  
+    // Обробка подій підключення
+    useEffect(() => {
+      if (readyState === ReadyState.OPEN) {
+        console.log('Connected to WebSocket server');
+        const message = {
+          event: 'auth',
+          data: token
+        };
+        sendJsonMessage(message);
+      } else if (readyState === ReadyState.CLOSED) {
+        console.log('Disconnected from WebSocket server');
+      }
+    }, [readyState]);
+  
 
-    function onDisconnect() {
-      setIsConnected(false);
-    }
+    // const sendMessage = () => {
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("kid.warning", (warning) => {
-      toast.info(warning);
-      getArrayOfChildren();
-    });
-
-    return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("cook.orders.create", () => {
-        getArrayOfChildren();
-      });
-    };
-  }, []);
-  // const arrayOfChildren = [
+    // };
+    useEffect(() =>{
+      if (typeof lastJsonMessage === 'object' && lastJsonMessage !== null) {
+        addNotification({
+          title: 'Warning',
+          subtitle: 'Check your childrens problems',
+          message: "Children problem",
+          theme: 'darkblue',
+          native: true 
+        });
+      }
+    }, [lastJsonMessage]);
   //     {
   //       id: "1",
   //       money: 100,

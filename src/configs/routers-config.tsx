@@ -55,7 +55,7 @@ export const ROUTES_CONFIG = {
       element: <NotFound />,
     },
     {
-      path: "/:code",
+      path: "code/:code",
       element: <CheckUrl />,
     },
   ],
@@ -65,10 +65,19 @@ export const ROUTES_CONFIG = {
         path: "*",
         element: <ChildList />,
       },
+      {
+        path: "code/:code",
+        element: <CheckUrl />,
+      },
     ],
     child: [      {
       path: "*",
       element: <Game />,
-    },],
+    },
+    {
+      path: "code/:code",
+      element: <CheckUrl />,
+    },
+  ],
   },
 };

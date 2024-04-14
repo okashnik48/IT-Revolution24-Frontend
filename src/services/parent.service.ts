@@ -1,24 +1,25 @@
 import { serviceApi } from "./app.service";
 
-export type Child = {
+type Child = {
     id: number;
-    createdAt: string; 
-    name: string;
     email: string;
-    isRegistered: boolean;
+    name: string;
+    newMessages: string[];
+    password: string;
+    alivePetsCount: number;
     balance: number;
+    starvingPetsCount: number;
 };
 
 
 const parentService = serviceApi.injectEndpoints({
     endpoints: (builder) => ({
-        getPets: builder.query<Child[] , null >({
+        getChildrens: builder.query<Child[] , null >({
             query: (body) => ({
                 url: '/users/children',
                 method: 'GET',
             }),
         }), 
-
     })
 })
 

@@ -8,6 +8,9 @@ import userService, { Tokens } from "./services/user.service";
 import { SetTokens, SetUserInfo } from "./store/slices/user";
 import Preloader from "./components/preloader/Preloader";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const userRole = useAppSelector((state) => state.user.user.role);
   const isRegistered = useAppSelector((state) => state.user.user.isRegistered);
@@ -18,11 +21,16 @@ function App() {
 
   useEffect(() => {
     const storedTokensString = localStorage.getItem("tokens");
-    const storedTokens: Tokens | null = storedTokensString
-      ? JSON.parse(storedTokensString)
-      : null;
+    let storedTokens: Tokens | null = null;
+    
+    try {
+      storedTokens = storedTokensString ? JSON.parse(storedTokensString) : null;
+    } catch (error) {
+      console.log("Error parsing stored tokens:");
+      
+    }
 
-    if (storedTokens !== null) {
+    if (storedTokens !== null && storedTokens !== undefined ) {
       const { accessToken, refreshToken } = storedTokens;
       dispatch(SetTokens({ accessToken, refreshToken }));
 
@@ -51,6 +59,7 @@ function App() {
             <Route key={path} path={path} element={element} />
           ))}
         </Routes>
+        <ToastContainer />
       </BrowserRouter>
     );
   }
@@ -62,6 +71,7 @@ function App() {
           <Route key={path} path={path} element={element} />
         ))}
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

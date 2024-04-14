@@ -45,11 +45,11 @@ export const Auth: FC = () => {
     authHandller(formData)
       .unwrap()
       .then((data) => {
-        dispatch(SetTokens(data.tokens));
+        dispatch(SetTokens(data.Tokens));
         console.log("$56456")
         localStorage.setItem(
           "tokens",
-          JSON.stringify(data.tokens)
+          JSON.stringify(data.Tokens)
         );
         getUserInfoHandler(null).unwrap().then((value) => {
           dispatch(SetUserInfo(value));

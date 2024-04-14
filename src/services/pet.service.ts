@@ -2,14 +2,11 @@ import { serviceApi } from "./app.service";
 
 
 interface Pets {
-    id: number;
-    type: string;
-    sex: string;
-    satiety: number;
-    loveMeter: number;
-    cost: number;
-    userId: number;
-}
+        id: number;
+        type: string;
+        sex: string;
+        satiety: number;
+        }
 
 
 const petService = serviceApi.injectEndpoints({
@@ -19,16 +16,24 @@ const petService = serviceApi.injectEndpoints({
                 url: '/pets',
                 method: 'GET',
             }),
-            invalidatesTags: ["pets"],
+            providesTags: ["pets"],
         }), 
-        sellPet: builder.mutation<null , {petId: string } >({
+        sellPet: builder.mutation<null , {type: string } >({
             query: (body) => ({
                 url: '/pets/sell',
                 method: 'POST',
                 body: body
             }),
-            providesTags: ["pets"],
+            invalidatesTags: ["pets"],
+        }), 
+        fidPets: builder.mutation<null , null >({
+            query: (body) => ({
+                url: '/pets/feed',
+                method: 'POST',
+            }),
+            invalidatesTags: ["pets"],
         }),
+
     })
 })
 

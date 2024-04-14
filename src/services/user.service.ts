@@ -32,7 +32,7 @@ export type Tokens = {
 
 const userService = serviceApi.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation<{tokens: Tokens} , InfoForLogin >({
+        login: builder.mutation<{Tokens: Tokens} , InfoForLogin >({
             query: (body) => ({
                 url: '/auth/login',
                 method: 'POST',
@@ -45,7 +45,7 @@ const userService = serviceApi.injectEndpoints({
                   });
               },
         }), 
-        registration: builder.mutation<{tokens: Tokens} , InfoForRegistration >({
+        registration: builder.mutation<{Tokens: Tokens} , InfoForRegistration >({
             query: (body) => ({
                 url: '/auth/register',
                 method: 'POST',
@@ -58,13 +58,13 @@ const userService = serviceApi.injectEndpoints({
                   });
               },
         }),
-        getUserInfo: builder.query<UserProps ,null >({
+        getUserInfo: builder.query<UserProps, null>({
             query: (body) => ({
                 url: '/users/me',
                 method: 'GET',
             }),
-            providesTags["pets"]
-        }), 
+            providesTags: ["pets"],
+        }),
         verifyCode: builder.mutation<null , number >({
             query: (body) => ({
                 url: '/auth/code',

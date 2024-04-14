@@ -1,6 +1,14 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, Grid, Modal } from '@mui/material';
-import petService from '../../../services/pet.service';
+import React, { useMemo } from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Grid,
+  Modal,
+} from "@mui/material";
+import petService from "../../../services/pet.service";
 
 interface Fish {
   id: number;
@@ -11,41 +19,87 @@ interface Fish {
 }
 
 const FishCard: React.FC<Fish> = ({ image, name, price, quantity, id }) => {
-const [sellPetHandller] = petService.useSellPetMutation();
+  const [sellPetHandller] = petService.useSellPetMutation();
 
-const sellPet = () =>{
-    sellPetHandller({petId: id.toString()})
-}
+  const sellPet = () => {
+    sellPetHandller({ type: name});
+  };
 
   return (
-    <Card sx={{ margin: 2 }}>
-      <CardMedia component="img" height="140" width="00" image={image} alt={name} />
+<Card sx={{ margin: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <CardMedia
+    component="img"
+    height="140"
+    width="100"
+    image={image}
+    alt={name}
+  />
 
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Ціна: {price} грн
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Кількість: {quantity}
-        </Typography>
-        <Button variant="contained" color="primary" style = {{marginTop: '20px'}} onclick = {sellPet}>
-          Продати
-        </Button>
-      </CardContent>
-    </Card>
+  <CardContent style={{ textAlign: 'center' }}>
+    <Typography gutterBottom variant="h5" component="div">
+      {name}
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      Price: {price} $
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      Quantity: {quantity}
+    </Typography>
+    <Button
+      variant="contained"
+      color="primary"
+      style={{ marginTop: "20px" }}
+      onClick={sellPet}
+    >
+      Sell
+    </Button>
+  </CardContent>
+</Card>
+
   );
 };
 
-
-const PetsShop: React.FC<any> = ({ isModalWarningInfo, setIsModalWarningInfo }) => {
-  const fishData: Fish[] = [
-    { id: 1, name: 'fish', image: '/images/fish.png', price: 350, quantity: 10 },
-    { id: 2, name: 'ship', image: '/images/shrimp.png', price: 250, quantity: 15 },
-    { id: 3, name: 'snail', image: '/images/snail.png', price: 300, quantity: 12 },
-  ];
+const PetsShop: React.FC<any> = ({
+  isModalWarningInfo,
+  setIsModalWarningInfo,
+}) => {
+  const { data } = petService.useGetPetsQuery(null);
+  const fishData: Fish[] = useMemo(() =>{
+    const startedArray = [
+    {
+      id: 1,
+      name: "fish",
+      image: "/images/fish.png",
+      price: 100,
+      quantity: 0,
+    },
+    {
+      id: 2,
+      name: "ship",
+      image: "/images/shrimp.png",
+      price: 350,
+      quantity: 0,
+    },
+    {
+      id: 3,
+      name: "snail",
+      image: "/images/snail.png",
+      price: 200,
+      quantity: 0,
+    },
+  ]
+  if (data === null || data === undefined) return startedArray;
+  else{
+    data.map((pet) =>{
+      if (pet.type === "fish") startedArray[0].quantity++;
+      
+      if (pet.type === "shrimp") startedArray[1].quantity++;
+      
+      if (pet.type === "snail") startedArray[2].quantity++;
+    })
+  }
+  return startedArray;
+}, [data])
 
   return (
     <Modal
@@ -54,12 +108,19 @@ const PetsShop: React.FC<any> = ({ isModalWarningInfo, setIsModalWarningInfo }) 
       aria-labelledby="modal-warning-info"
       aria-describedby="modal-description"
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <div style={{ backgroundColor: '#333333', maxWidth: 600, padding: 20, borderRadius: 8 }}>
+      <div
+        style={{
+          backgroundColor: "#333333",
+          maxWidth: 600,
+          padding: 20,
+          borderRadius: 8,
+        }}
+      >
         <Typography variant="h4" gutterBottom align="center" color="white">
           Рибний магазин
         </Typography>
@@ -75,15 +136,15 @@ const PetsShop: React.FC<any> = ({ isModalWarningInfo, setIsModalWarningInfo }) 
               />
             </Grid>
           ))}
-        </Grid> 
+        </Grid>
         <Button
-  onClick={() => setIsModalWarningInfo(false)}
-  variant="contained"
-  color="primary"
-  sx={{ marginTop: 2, display: 'block', margin: '0 auto' }}
->
-  Закрити
-</Button>
+          onClick={() => setIsModalWarningInfo(false)}
+          variant="contained"
+          color="primary"
+          sx={{ marginTop: 2, display: "block", margin: "0 auto" }}
+        >
+          Закрити
+        </Button>
       </div>
     </Modal>
   );

@@ -5,16 +5,16 @@ import ModalWarningInfo from "./ModalWarningInfo";
 import "./styles/ChildInfo.scss";
 
 type Props = {
-  child: {
-    id: string;
-    money: number;
-    aliveFishCount: number;
-    deadFishCount: number;
-    starvingFishCount: number;
-    password: string;
-    username: string;
-    newMessages: string[];
-  };
+  child:{
+      id: number;
+      email: string;
+      name: string;
+      newMessages: string[];
+      password: string;
+      alivePetsCount: number;
+      balance: number;
+      starvingPetsCount: number;
+};
 };
 
 export const ChildInfo = ({ child }: Props) => {
@@ -27,13 +27,13 @@ export const ChildInfo = ({ child }: Props) => {
     <>
       <div className="long-card">
         <div className="user-info">
-          <div className="username">{child.username}</div>
-          <div className="money">Money: {child.money}</div>
+          <div className="username">{child.name}</div>
+          <div className="money">Money: {child.balance}</div>
         </div>
         <div className="fish-counts">
-          <div>Alive Fish Count: {child.aliveFishCount}</div>
-          <div>Dead Fish Count: {child.deadFishCount}</div>
-          <div>Starving Fish Count: {child.starvingFishCount}</div>
+          <div>Alive Fish Count: {child.alivePetsCount}</div>
+          <div>Starving Fish Count: {child.starvingPetsCount}</div>
+          <div>Password: {child.password}</div>
         </div>
         <Badge count={child.newMessages.length}>
           <Button
@@ -50,7 +50,7 @@ export const ChildInfo = ({ child }: Props) => {
           type="primary"
           danger
           onClick={(e) => {
-            DeleteUserHandler(child.id);
+            DeleteUserHandler(child.id.toString());
           }}
         >
           DELETE

@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Stack, Typography, TextField, IconButton, FormControl, FormLabel } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  TextField,
+  IconButton,
+  FormControl,
+  FormLabel,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import SmsIcon from "@mui/icons-material/Sms";
 import { bot_messages } from "./dummy_messages";
@@ -31,11 +38,21 @@ export default function Chat() {
     }, 1000);
   };
 
+  useEffect(() => {
+    const savedMessages = localStorage.getItem("chatMessages");
+    if (savedMessages) {
+      setChatMessages(JSON.parse(savedMessages));
+    }
+  }, []);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
-  }
+  };
 
   useEffect(() => {
+    if (chatMessages.length > 0) {
+      localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
+    }
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -65,47 +82,46 @@ export default function Chat() {
         {/* Invisible div at the end of the messages */}
       </Stack>
       <Stack direction="row" justifyContent="space-between">
-          <FormControl
-            fullWidth
-            sx={{
-              background: "white",
-              borderRadius: "10px",
-              padding: "8px",
+        <FormControl
+          fullWidth
+          sx={{
+            background: "white",
+            borderRadius: "10px",
+            padding: "8px",
+          }}
+        >
+          <FormLabel
+            htmlFor="outlined-multiline-static"
+            sx={{ color: "white" }}
+          ></FormLabel>
+          <TextField
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                send();
+              }
             }}
-          >
-            <FormLabel
-              htmlFor="outlined-multiline-static"
-              sx={{ color: "white" }}
-            ></FormLabel>
-            <TextField
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  send();
-                }
-              }}
-              fullWidth
-              variant="outlined"
-              color="warning"
-              id="outlined-multiline-static"
-              label="Message"
-              value={message}
-              onChange={onChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton
-                    color="warning"
-                    aria-label="send-button"
-                    onClick={send}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                ),
-              }}
-              placeholder="Type a message"
-            />
-
-          </FormControl>
-        </Stack>
+            fullWidth
+            variant="outlined"
+            color="warning"
+            id="outlined-multiline-static"
+            label="Message"
+            value={message}
+            onChange={onChange}
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  color="warning"
+                  aria-label="send-button"
+                  onClick={send}
+                >
+                  <SendIcon />
+                </IconButton>
+              ),
+            }}
+            placeholder="Type a message"
+          />
+        </FormControl>
+      </Stack>
     </>
   );
 }

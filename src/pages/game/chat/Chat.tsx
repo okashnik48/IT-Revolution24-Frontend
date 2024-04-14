@@ -28,7 +28,7 @@ export default function Chat() {
 
     setTimeout(() => {
       setChatMessages((prev) => [...prev, botResponse]);
-    }, 2000);
+    }, 1000);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
